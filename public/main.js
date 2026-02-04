@@ -3,6 +3,7 @@ import { PointerLockControls } from "https://cdn.jsdelivr.net/npm/three@0.158.0/
 
 const overlay = document.getElementById("overlay");
 const button = overlay.querySelector("button");
+const overlayMessage = document.getElementById("overlay-message");
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0b0f1a);
@@ -22,16 +23,36 @@ document.body.appendChild(renderer.domElement);
 
 const controls = new PointerLockControls(camera, document.body);
 
-button.addEventListener("click", () => {
+const tryLock = () => {
+  if (!document.body.requestPointerLock) {
+    overlayMessage.textContent = "Pointer Lock не поддерживается в этом браузере.";
+    return;
+  }
   controls.lock();
+};
+
+button.addEventListener("click", (event) => {
+  event.preventDefault();
+  tryLock();
+});
+
+overlay.addEventListener("click", (event) => {
+  if (event.target === button) return;
+  tryLock();
 });
 
 controls.addEventListener("lock", () => {
   overlay.classList.add("hidden");
+  overlayMessage.textContent = "";
 });
 
 controls.addEventListener("unlock", () => {
   overlay.classList.remove("hidden");
+  overlayMessage.textContent = "Кликните, чтобы снова захватить курсор.";
+});
+
+controls.addEventListener("error", () => {
+  overlayMessage.textContent = "Не удалось захватить курсор. Попробуйте еще раз.";
 });
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
