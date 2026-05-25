@@ -1,0 +1,37 @@
+{
+  "name": "codex-v2",
+  "version": "1.0.0",
+  "author": "SonLove_",
+  "description": "CodeX V2 - autonomous local development agent via browser ChatGPT",
+  "main": "dist/app/main.js",
+  "scripts": {
+    "build": "npm run build:app && npm run build:ui",
+    "build:app": "tsc -p app/tsconfig.json",
+    "build:ui": "vite build --config ui/vite.config.ts",
+    "dev": "concurrently \"npm run dev:app\" \"npm run dev:ui\"",
+    "dev:app": "tsc -p app/tsconfig.json --watch",
+    "dev:ui": "vite --config ui/vite.config.ts",
+    "lint": "eslint \"{app,ui}/src/**/*.{ts,tsx}\"",
+    "typecheck": "tsc -p app/tsconfig.json --noEmit && tsc -p ui/tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "diff": "^5.2.0",
+    "electron": "^31.0.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "uuid": "^10.0.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/react": "^18.3.14",
+    "@types/react-dom": "^18.3.3",
+    "@typescript-eslint/eslint-plugin": "^8.15.0",
+    "@typescript-eslint/parser": "^8.15.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.0",
+    "eslint": "^9.15.0",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
+  }
+}
