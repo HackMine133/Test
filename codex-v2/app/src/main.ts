@@ -1,5 +1,6 @@
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { ChatLoop } from './modules/chat_loop';
 import { AgentRequest } from './types';
 
@@ -18,7 +19,13 @@ function createWindow(): void {
     backgroundColor: '#0f1118'
   });
 
-  mainWindow.loadURL('http://localhost:5173');
+  const devServerUrl = process.env.CODEX_UI_URL ?? 'http://localhost:5173';
+  if (process.env.NODE_ENV === 'development' || process.env.CODEX_DEV === '1') {
+    void mainWindow.loadURL(devServerUrl);
+  } else {
+    const uiPath = path.resolve(__dirname, '../../ui/index.html');
+    void mainWindow.loadURL(pathToFileURL(uiPath).toString());
+  }
 }
 
 app.whenReady().then(() => {

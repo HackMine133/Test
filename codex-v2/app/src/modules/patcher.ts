@@ -4,7 +4,7 @@ import path from 'node:path';
 export class Patcher {
   async apply(projectPath: string, files: Array<{ path: string; content: string }>): Promise<string[]> {
     const changed: string[] = [];
-    const patchPlan = { create: [], update: [], delete: [] as string[] };
+    const patchPlan: { create: string[]; update: string[]; delete: string[] } = { create: [], update: [], delete: [] };
     for (const file of files) {
       const fullPath = path.join(projectPath, file.path);
       const exists = await this.exists(fullPath);
